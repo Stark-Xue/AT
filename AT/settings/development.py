@@ -23,7 +23,7 @@ SECRET_KEY = '9!q2h=6#q-qrj7yz-qqf8f9hcg%bn-s+tl!bfs*zerv#+epu!o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [‘*’]
+ALLOWED_HOSTS = ['*']
 
 
 # Database
