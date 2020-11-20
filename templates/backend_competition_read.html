@@ -1,0 +1,73 @@
+{% extends "backend_layout.html" %}
+
+{% block title %}{{ competition_obj.com_name }}-AT后台管理{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/plugins/kindeditor/themes/default/default.css"/>
+    <style>
+        .kind-content {
+            width: 100%;
+            min-height: 450px;
+        }
+    </style>
+{% endblock %}
+
+{% block conent %}
+    <ol class="breadcrumb" style="margin-bottom: 0;">
+        <li><a href="/backend/competition/">竞赛项目</a></li>
+        <li class="active">{{ competition_obj.com_name }}</li>
+    </ol>
+    <div style="padding: 5px 8px;">
+        <form action="/backend/competition/edit-{{ cid }}/" method="get">
+            <div class="form-group">
+                <input type="submit" id="modify" class="btn btn-primary" value="修改竞赛项目信息">
+            </div>
+            <div class="form-group">
+                <label for="">竞赛项目照片：</label>
+                <div>
+
+                    <img id="previewImg"
+                         src="{{ competition_obj.com_img }}"
+                         onerror="this.src='/static/images/ser_right.png';this.onerror=null"
+                         style="width: 190px;height: 151px;">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">竞赛项目名称： <span>{{ form.com_name.errors.0 }}</span></label>
+                {{ form.com_name }}
+            </div>
+            <div class="form-group">
+                <label for="">竞赛项目简介： <span>{{ form.com_validity.errors.0 }}</span></label>
+                {{ form.com_validity }}
+            </div>
+            <div class="form-group">
+                <label for="content">竞赛详细介绍：</label>
+                <hr/>
+                {% autoescape off %}{{ competition_obj.com_introduction }}{% endautoescape %}
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script charset="utf-8" src="/static/plugins/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="/static/plugins/kindeditor/lang/zh_CN.js"></script>
+    <script>
+        KindEditor.ready(function (K) {
+            var editor = K.create('textarea[name="com_introduction"]', {
+                resizeType: 1,
+                uploadJson: "/backend/upload_img/",
+                extraFileUploadParams:{
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            });
+        });
+        $(function () {
+            $("#id_com_name").attr("readonly", "readonly");
+            $("#id_com_validity").attr("readonly", "readonly");
+            $("#id_com_introduction").attr("readonly", "readonly");
+            console.log("qqqq");
+        })
+    </script>
+{% endblock %}

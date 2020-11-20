@@ -1,0 +1,93 @@
+{% extends "backend_layout.html" %}
+
+{% block title %}首页管理-AT后台管理{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/plugins/kindeditor/themes/default/default.css"/>
+    <link rel="stylesheet" href="/static/css/add_photos.css" />
+    <style>
+            .form-horizontal .control-label {
+            padding-top: 7px;
+            margin-bottom: 0;
+            text-align: right;
+        }
+
+        .avatar-container {
+            height: 200px;
+            width: 200px;
+            padding: 2px;
+            border: 1px solid #dddddd;
+            position: relative;
+        }
+
+        .avatar-container img {
+            height: 100%;
+            width: 100%;
+            border: 0;
+            overflow: hidden;
+        }
+
+        .avatar-container .text {
+            text-align: center;
+        }
+
+        .avatar-container .img-file {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            position: absolute;
+            z-index: 102;
+        }
+    </style>
+{% endblock %}
+
+{% block conent %}
+    <ol class="breadcrumb" style="margin-bottom: 0;">
+        <li><a href="#">首页管理</a></li>
+        <li class="active">轮播图管理</li>
+    </ol>
+
+    <div style="padding: 50px 8px;">
+        <div style="margin-bottom: 30px;"><span style="color: red;">请上传宽度为1366px，高度为450px的图片文件（后缀名为.jpg、.png等）</span></div>
+        <div id="add-photos">
+            {% if imgs %}
+            {# 判断 是否有图片 #}
+                {% for photo in imgs  %}
+                {# 显示图片信息 #}
+                    <div class="one-photo">
+                        <div class="add-now p-{{ forloop.counter }}">
+                            <img src = "/static/images/lbt/{{ photo }}" style="display: block">
+                        </div>
+                        {# 判断图片状态 #}
+                        <input type="text" value="{{ forloop.counter }}" style="display: none;" name="delete">
+                        <input type="file" name="photo"  accept=".jpg,.jpeg,.png" style="display: none;" onchange="fileUrl(this);" id="photo-{{ forloop.counter }}">
+                        <button type="button" onclick="removeImge(this, '{{ forloop.counter }}')" >删除</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+{#            {% if photos|length  <= 4 %}#}
+            {# 若图片个数小于5则显示新的图片添加位 #}
+                <div class="one-photo">
+
+                    <div class="add-now p-{{ photos|length| add:'1' }}" onclick="inputUrl('#photo-{{ photos|length| add:"1" }}')">
+                        <i class="fa fa-fw fa-plus-square"></i>
+                        <img src = "">
+                    </div>
+                    <input type="file" name="photo" accept=".jpg,.jpeg,.png" style="display: none;" onchange="fileUrl(this);" id="photo-{{ photos|length| add:'1' }}" >
+                    <button type="button" onclick="removeImge(this, '{{ photos|length| add:"1" }}')" style="display: none;">删除</button>
+                </div>
+{#            {% endif %}#}
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script charset="utf-8" src="/static/js/jquery-1.12.4.js"></script>
+    <script charset="utf-8" src="/static/js/jquery.cookie.js"></script>
+    <script charset="utf-8" src="/static/js/add_photos.js"></script>
+    <script>
+
+    </script>
+{% endblock %}

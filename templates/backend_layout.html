@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/static/css/commons.css"/>
+    <link rel="stylesheet" href="/static/css/backend.css"/>
+    <style>
+        .hide{
+            display: none;
+        }
+    </style>
+    {% block css %}{% endblock %}
+</head>
+<body>
+<div class="pg-header">
+    <div class="logo left" style="text-align: center;background-color: #1c5a9c;">
+        <a href="#" style="color: #ffffff;font-size:30px;font-weight: bold;text-decoration: none">
+            AT后台管理
+        </a>
+    </div>
+
+    <div class="left-menu left">
+        <a class="menu-item" href="/index/">返回AT首页</a>
+    </div>
+
+    <div class="right-menu right clearfix">
+        <div class="user-info right">
+            <a href="#" class="avatar">
+{#                <img class="img-circle" style="width: 40px; height: 40px;" src="{{ user_obj.avatar }}"/>#}
+                <span>管理员：{{ request.session.username }}</span>
+            </a>
+
+            <div class="more-info">
+                {% if request.session.username == "root" %}
+                    <a href="/backend/user/" class="more-item">账号管理</a>
+                {% else %}
+                    <a href="/backend/user/" class="more-item">个人信息</a>
+                {% endif %}
+                <a href="/backend/logout/" class="more-item">注销</a>
+            </div>
+        </div>
+
+        <a href="/backend/order/" class="user-menu right">
+            体验课预约消息
+            <i class="fa fa-commenting-o" aria-hidden="true"></i>
+            <span class="badge bg-success">{{ request.session.order_count }}</span>
+        </a>
+    </div>
+</div>
+
+<div class="pg-body">
+    <div class="menu">
+        <div class="menu-item" id="i5" onclick="changeMenu('i5')">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <a href="/backend/user/">管理员信息管理</a>
+            <div class="">
+            </div>
+        </div>
+        <div class="menu-item" id="i5" onclick="changeMenu('i6')">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <a href="/backend/order/">体验课预约管理</a>
+            <div class="">
+            </div>
+        </div>
+        <div class="menu-item" id="i1" href="javascript:void(0);" onclick="changeMenu('i1')">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <a href="/backend/home/">首页管理</a>
+        </div>
+        <div class="menu-item" id="i2" onclick="changeMenu('i2')">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <a href="/backend/course/">课程管理</a>
+            <div class="">
+            </div>
+        </div>
+        <div class="menu-item" href="javascript:void(0);" id="i3" onclick="changeMenu('i3')" >
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <a href="/backend/competition/">竞赛管理</a>
+            <div class="">
+            </div>
+        </div>
+        <div class="menu-item" href="javascript:void(0);" id="i6" onclick="changeMenu('i6')" >
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <a href="/backend/competitionResult/">竞赛成绩管理</a>
+            <div class="">
+            </div>
+        </div>
+        <div class="menu-item" href="javascript:void(0);" id="i5" onclick="changeMenu('i5')" >
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <a href="/backend/school/">校区管理</a>
+            <div class="">
+            </div>
+        </div>
+        <div class="menu-item" href="javascript:void(0);"  id="i4" onclick="changeMenu('i4')">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <a>AT简介</a>
+            <div class="">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/backend/baseinfo/">基本信息</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/backend/companyIntroduce/">详细介绍</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/backend/teach/">教学理念</a>
+{#        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/backend/school/">校区分布</a>#}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/backend/recruit/">精英招募</a>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        {% block conent %} {% endblock %}
+    </div>
+</div>
+<script type="text/javascript" src="/static/js/jquery-1.12.4.js"></script>
+<script>
+{#    function changeMenu(nid){#}
+{#        console.log(nid);#}
+{#        var current_nid = document.getElementById(nid);#}
+{#        var item_list = current_nid.parentElement.children;#}
+{#        console.log(item_list);#}
+{#        for(var i=0; i<item_list.length; i++){#}
+{#            var current_item = item_list[i];#}
+{#            if(current_item.children[2])#}
+{#                current_item.children[2].classList.add('hide');#}
+{#        }#}
+{#        //console.log(item_list);#}
+{#        if(current_nid.children[2])#}
+{#            current_nid.children[2].classList.remove('hide');#}
+{#    }#}
+</script>
+{% block js %}{% endblock %}
+</body>
+</html>

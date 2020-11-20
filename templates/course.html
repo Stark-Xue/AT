@@ -1,0 +1,257 @@
+{% extends "web_layout.html" %}
+{% block css%}
+{#    <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css"/>#}
+{#    <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.css"/>#}
+    <style>
+        .activee a{
+            color: red;
+        }
+        .panel {
+          margin-bottom: 20px;
+          background-color: #fff;
+          border: 1px solid transparent;
+          border-radius: 4px;
+          -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+                  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+        }
+        .panel-default {
+          border-color: #ddd;
+        }
+        .panel-heading {
+          padding: 10px 15px;
+          border-bottom: 1px solid transparent;
+          border-top-left-radius: 3px;
+          border-top-right-radius: 3px;
+        }
+        .panel-default > .panel-heading {
+          color: #333;
+          background-color: #f5f5f5;
+          border-color: #ddd;
+        }
+        .panel-body {
+          padding: 15px;
+        }
+        .hot-recommend, .hot-comment {
+            border-radius: 0;
+            border: 0;
+            margin-top: 20px;
+        }
+
+        .hot-recommend .panel-heading, .hot-comment .panel-heading {
+            border-radius: 0;
+            background-color: #5bc0de;
+        }
+
+        .hot-recommend .panel-body, .hot-comment .panel-body {
+            padding: 5px 10px;
+        }
+
+        .hot-recommend li, .hot-comment li {
+            padding: 2px 10px;
+            margin-top: 14px;
+            font-family: 'Microsoft YaHei','SF Pro Display',Roboto,Noto,Arial,'PingFang SC',sans-serif;
+        }
+        .content:hover{
+            background-color: #80bdff;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div style="position: fixed;top: 70px;left: 80px;background-color: white;height: 40px;padding-top: 10px;width: 100%;">
+        <span style="font-size: 15px;">当前所在位置：>>课程分类>>{{ now_course_obj.cour_name }}</span>
+    </div>
+    <div style="width: 1200px; margin: 40px auto;">
+        <div class="content-left" style="width: 70%;float: left;">
+{#            <!--css3弹性布局-->#}
+{#            <div style="background-color: #5bc0de;width: 800px;margin: 20px auto;display:flex;flex-direction:row;text-align: center;height: 40px;line-height: 40px;">#}
+{#                <div class="content" style="flex:1;margin: auto 5px;">IQ</div>｜#}
+{#                <div class="content" style="flex:1;margin: auto 5px;">EDR</div>｜#}
+{#                <div class="content" style="flex:1;margin: auto 5px;">PYTHON</div>｜#}
+{#                <div class="content" style="flex:1;margin: auto 5px;">C++</div>｜#}
+{#                <div class="content" style="flex:1;margin: auto 5px;">e</div>｜#}
+{#                <div class="content" style="flex:1;margin: auto 5px;">f</div>#}
+{#            </div>#}
+
+            {% autoescape off %}
+                {{ now_course_obj.cour_introduction }}
+            {% endautoescape %}
+        </div>
+        <div class="content-right" style="width: 25%; float: right;">
+            <div class="panel panel-default hot-recommend">
+                <div class="panel-heading">课程目录</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        {% for row in course_obj %}
+                            {% if now_course_obj == row %}
+                                <li style="font-size: 15px;" class="activee"><a href="/course/{{ row.id }}">{{ row.cour_name }}</a></li>
+                            {% else %}
+                                <li style="font-size: 15px;"><a style="color: black;" href="/course/{{ row.id }}">{{ row.cour_name }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="panel panel-default hot-recommend">
+                <div class="panel-heading" style="background-color: #5bc0de;">免费试听课预约</div>
+                <div class="panel-body" style=" margin: auto;">
+                    <form action="/orderr/" method="post" id="order_form" class="order_class">
+                        {% csrf_token %}
+                        <div style="padding: 5px 20px;">
+                            <label for="name">联系方式&nbsp;&nbsp;</label>
+                            <input class="easyui-validatebox" type="text" name="stu_tel" placeholder="11位手机号码" required="true"></input>
+                            <span style="color: red; font-size: 8px;display: none;" class="tel_err"></span>
+                        </div>
+
+                        <div style="padding: 5px 20px;">
+                            <label for="email">学生姓名&nbsp;&nbsp;</label>
+                            <input class="easyui-validatebox" type="text" name="stu_name" required="true" placeholder="请输入姓名" validType="email"></input>
+                            <span style="color: red; font-size: 8px;display: none;" class="name_err"></span>
+                        </div>
+
+                        <div style="padding: 5px 20px;">
+                            <label for="subject">学生年龄&nbsp;&nbsp;</label>
+                            <input class="easyui-validatebox" type="text" name="stu_age" placeholder="请输入年龄" required="true"></input>
+                            <span style="color: red; font-size: 8px;display: none;" class="age_err"></span>
+                        </div>
+
+
+                        <div style="padding: 5px 20px;">
+                            <input value="提交申请" style="background-color: red;width: 225px;" type="button" class="sub">
+                        </div>
+                    </form>
+                    <div class="order_success" style="display: none;">您已成功预约体验课，请留意您的手机消息</div>
+                </div>
+            </div>
+            <div class="panel panel-default hot-recommend">
+                <div class="panel-heading">校区分布</div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        {% for row in school_obj %}
+                            <li style="font-size: 15px;font-weight: 600;">{{ row.sc_name }}</li>
+                            <li style="font-size: 12px;">详细地址：{{ row.sc_addr }}</li>
+                            <li style="font-size: 12px;">联系电话：{{ row.sc_tel }}</li>
+                            <hr/>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="hahaha" style="display:none; position: fixed; top: 80px;right: 200px;">
+                <div class="panel panel-default hot-recommend" style="width: 300px;">
+                    <div class="panel-heading" style="background-color: #5bc0de;">免费试听课预约</div>
+                    <div class="panel-body" style="margin: auto;">
+                        <form action="/orderr/" method="post" id="order_form2" class="order_class">
+                            {% csrf_token %}
+                            <div style="padding: 5px 20px;">
+                                <label for="name">联系方式&nbsp;&nbsp;</label>
+                                <input class="easyui-validatebox" type="text" name="stu_tel" placeholder="11位手机号码" required="true"></input>
+                                <span style="color: red; font-size: 8px;display: none;" class="tel_err"></span>
+                            </div>
+                            <div style="padding: 5px 20px;">
+                                <label for="email">学生姓名&nbsp;&nbsp;</label>
+                                <input class="easyui-validatebox" type="text" name="stu_name" required="true" placeholder="请输入姓名" validType="email"></input>
+                                <span style="color: red; font-size: 8px;display: none;" class="name_err"></span>
+                            </div>
+                            <div style="padding: 5px 20px;">
+                                <label for="subject">学生年龄&nbsp;&nbsp;</label>
+                                <input class="easyui-validatebox" type="text" name="stu_age" placeholder="请输入年龄" required="true"></input>
+                                <span style="color: red; font-size: 8px;display: none;" class="age_err"></span>
+                            </div>
+
+                            <div style="padding: 5px 20px;">
+                                <input value="提交申请" style="background-color: red;width: 225px;" type="button" class="sub2">
+                            </div>
+                        </form>
+
+                        <div class="order_success" style="display: none;">您已成功预约体验课，请留意您的手机消息</div>
+                    </div>
+                </div>
+                <div class="panel panel-default hot-recommend">
+                    <div class="panel-heading">课程目录</div>
+                    <div class="panel-body">
+                        <ul class="list-unstyled">
+                            {% for row in course_obj %}
+                                {% if now_course_obj == row %}
+                                    <li style="font-size: 15px;" class="activee"><a href="/course/{{ row.id }}">{{ row.cour_name }}</a></li>
+                                {% else %}
+                                    <li style="font-size: 15px;"><a style="color: black;" href="/course/{{ row.id }}">{{ row.cour_name }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).scroll(function() {
+            var scroll_height = $(document).scrollTop();
+            var content_right_height =  $(".content-right").height();
+            console.log(scroll_height);
+            console.log(content_right_height);
+
+            if(scroll_height > content_right_height){  //距离顶部大于100px时
+                $(".hahaha").attr("style", "position: fixed; top: 80px;");
+            }else{
+                $(".hahaha").attr("style", "display: none;position: fixed; top: 80px;");
+            }
+
+        });
+
+
+        $(".sub").click(function () {
+            $(this).parent().parent().find("span").attr("style", "color: red; font-size: 8px;display: inline-block;");
+           $.ajax({
+               url: '/orderr/',
+                type: "POST",
+                data: $('#order_form').serialize(), // form表单中的所有可以提交的值打包发送到后台
+                //data: {'hostname': $('#host').val(), 'ip': $('#ip').val(), 'port': $('#port').val(), 'b_id': $('#sel').val()},
+                //function有三个参数，其中的第2个或第3个就是XMLHttprequest对象
+                success: function(data){
+                    // data是服务器端返回的字符串
+                    var obj = JSON.parse(data)
+                    if(obj.code == 1){
+                        //location.reload();
+                        //success
+                        $(".order_success").attr("style", "height: 90px;background-color: red;padding-top: 30px;padding-left: 5px;");
+                        $(".order_class").attr("style", "display: none;");
+                    }else{
+                        //fail
+                        //$('#error_msg').text(obj.error);
+                        $(".tel_err").text(obj.tel_err);
+                        $(".name_err").text(obj.name_err);
+                        $(".age_err").text(obj.age_err);
+                    }
+                }
+           })
+        });
+        $(".sub2").click(function () {
+            $(this).parent().parent().find("span").attr("style", "color: red; font-size: 8px;display: inline-block;");
+           $.ajax({
+               url: '/orderr/',
+                type: "POST",
+                data: $('#order_form2').serialize(), // form表单中的所有可以提交的值打包发送到后台
+                //data: {'hostname': $('#host').val(), 'ip': $('#ip').val(), 'port': $('#port').val(), 'b_id': $('#sel').val()},
+                //function有三个参数，其中的第2个或第3个就是XMLHttprequest对象
+                success: function(data){
+                    // data是服务器端返回的字符串
+                    var obj = JSON.parse(data)
+                    if(obj.code == 1){
+                        //location.reload();
+                        //success
+                        $(".order_success").attr("style", "height: 90px;background-color: red;padding-top: 30px;padding-left: 5px;");
+                        $(".order_class").attr("style", "display: none;");
+                    }else{
+                        //fail
+                        //$('#error_msg').text(obj.error);
+                        $(".tel_err").text(obj.tel_err);
+                        $(".name_err").text(obj.name_err);
+                        $(".age_err").text(obj.age_err);
+                    }
+                }
+           })
+        });
+    </script>
+{% endblock %}

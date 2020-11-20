@@ -1,0 +1,51 @@
+{% extends "web_layout.html" %}
+
+{% block title %}免费试听课预约{% endblock %}
+
+{% block css %}
+    <style>
+        .order{
+            margin: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="service">
+        <div class="service-content clearfix">
+            <div class="service-title" style="height: 30px;"></div>
+            <form action="/order/" method="post">
+                {% csrf_token %}
+                <div style="text-align:center; vertical-align:middle;">
+                    <div class="order">{{ obj.telephone }}</div>
+                    <div><span style="width:400px;display: inline-block;text-align:left;color: red;">{{ obj.errors.telephone.0 }}</span></div>
+                    <div class="order"><input type="text" name="stu_name" id="id_stu_name" placeholder="请输入学生姓名（选填）" style="width:400px; display: inline-block; " class="form-control" /></div>
+                    <div><span style="width:400px;display: inline-block;text-align:left;color: red;"></span></div>
+                    <div class="order">{{ obj.stu_age }}</div>
+                    <div><span style="width:400px;display: inline-block;text-align:left;color: red;">{{ obj.errors.stu_age.0 }}</span></div>
+                    <div class="order"><input type="text" name="weChat" id="id_weChat" placeholder="请输入您的微信号（选填）" style="width:400px; display: inline-block; " class="form-control" /></div>
+                    <div><span style="width:400px;display: inline-block;text-align:left;color: red;"></span></div>
+                    <input style="display: inline-block; width: 170px;" type="text" class="form-control" id="check_code" placeholder="请输入验证码" name="check_code" />
+                    <img src="/check_code/" onclick="changeCheckCode(this);">
+                    <input type="submit" class="btn btn-default" value="提交预约申请" style="width: 100px;" />
+                    <div><span style="width:400px;display: inline-block;text-align:left;color: red;">{{ checkError }}</span></div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+
+    <script>
+        function changeCheckCode(ths) {
+            ths.src = ths.src + "?";
+        }
+
+        $(function () {
+            $("#id_telephone, #id_stu_name, #id_stu_age, #id_weChat").removeAttr("required");
+        });
+
+    </script>
+{% endblock %}

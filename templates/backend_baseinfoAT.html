@@ -1,0 +1,279 @@
+{% extends "backend_layout.html" %}
+
+{% block title %}AT基本信息-AT后台管理{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/plugins/kindeditor/themes/default/default.css"/>
+    <style>
+        .kind-content {
+            width: 100%;
+            min-height: 450px;
+        }
+            .form-horizontal .control-label {
+            padding-top: 7px;
+            margin-bottom: 0;
+            text-align: right;
+        }
+
+        .avatar-container {
+            height: 200px;
+            width: 200px;
+            padding: 2px;
+            border: 1px solid #dddddd;
+            position: relative;
+        }
+
+        .avatar-container img {
+            height: 100%;
+            width: 100%;
+            border: 0;
+            overflow: hidden;
+        }
+
+        .avatar-container .text {
+            text-align: center;
+        }
+
+        .avatar-container .img-file {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            position: absolute;
+            z-index: 102;
+        }
+    </style>
+{% endblock %}
+
+{% block conent %}
+    <ol class="breadcrumb" style="margin-bottom: 0;">
+        <li><a href="#">AT简介</a></li>
+        <li class="active">基本信息</li>
+    </ol>
+    <div style="padding: 10px 8px;">
+        <form action="/backend/recruit/" method="post" style="margin-left: 240px;" class="form-horizontal" id="baseinfo_update_form">
+            {% csrf_token %}
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="com_name"  class="col-xs-2 control-label">企业名称：</label>
+
+                    <div class="col-xs-5">
+                        <p id="com_name_p" class="form-control-static">{{ company_obj.com_name }}</p>
+                        <input type="text" class="form-control" value="{{ company_obj.com_name }}" id="com_name" name="com_name" placeholder="请输入企业名称" style="display: none;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="com_tel" class="col-xs-2 control-label">企业电话：</label>
+
+                    <div class="col-xs-5">
+                        <p id="com_tel_p" class="form-control-static">{{ company_obj.com_tel }}</p>
+                        <input type="text" class="form-control" value="{{ company_obj.com_tel }}" id="com_tel" name="com_tel"
+                               placeholder="请输入企业联系方式" style="display: none;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="com_validity" class="col-xs-2 control-label">企业简介：</label>
+                    <div class="col-xs-5">
+                        <p id="com_validity_p" class="form-control-static">{{ company_obj.com_validity }}</p>
+                        <textarea name="com_validity" id="com_validity" style="min-height: 100px; display: none;" class="form-control"
+                                  placeholder="请输入企业简介">{{ company_obj.com_validity }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-offset-2 col-xs-10">
+                        <a href="javascript:void(0);" onclick="baseinfo_edit_ready(this);" style="margin-top: 1000px;">修改信息</a>
+                        <button type="button" id="basenfo_update" class="btn btn-primary" style="display: none;">保 存</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div style="position: absolute;margin-top: 400px;" class="col-xs-offset-1 col-xs-12">
+            <div>
+                <form id="fm2" role="form" method="POST" action="/backend/upload_log/" enctype="multipart/form-data"
+                      target="upload_iframe2">
+                    {% csrf_token %}
+                    <iframe style="display: none;" id="upload_iframe2" name="upload_iframe2"></iframe>
+                    <img id="previewImg2"
+                         src="{{ company_obj.com_log }}"
+                         style="width: 184px;height: 57px;">
+
+                    <!--<input id="avatarImg" name="avatar_img" type="file" class="img-file"/>-->
+                    <div class="container" style="position: relative;padding-left:60px; margin-top: 15px;">
+                        <span class="text"><a href="#">修改公司logo</a></span>
+                        <div style="position: absolute;top:0;">
+                            <input id="avatarImg2" name="avatarImg2" type="file" class="img-file" onchange="changeUpload2();" style="width: 100px;height:40px;opacity:0;" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div style="position: absolute;margin-top: 260px;" class="col-xs-offset-4 col-xs-12">
+            <div>
+
+                <form id="fm3" role="form" method="POST" action="/backend/upload_companyImg/" enctype="multipart/form-data"
+                      target="upload_iframe3">
+                    {% csrf_token %}
+                    <iframe style="display: none;" id="upload_iframe3" name="upload_iframe3"></iframe>
+                    <img id="previewImg3"
+                         src="{{ company_obj.com_img }}"
+                         style="width: 200px;height: 200px;">
+
+                    <!--<input id="avatarImg" name="avatar_img" type="file" class="img-file"/>-->
+                    <div class="container" style="position: relative;padding-left:50px; margin-top: 15px;">
+                        <span class="text"><a href="#">修改公司照片</a></span>
+                        <div style="position: absolute;top:0;">
+                            <input id="avatarImg3" name="avatarImg3" type="file" class="img-file" onchange="changeUpload3();" style="width: 100px;height:40px;opacity:0;" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div style="position: absolute;margin-top: 260px;" class="col-xs-offset-7 col-xs-12">
+{#             class="avatar-container"#}
+            <div>
+
+                <form id="fm1" role="form" method="POST" action="/backend/upload_avatar/" enctype="multipart/form-data"
+                      target="upload_iframe">
+                    {% csrf_token %}
+                    <iframe style="display: none;" id="upload_iframe" name="upload_iframe"></iframe>
+                    <img id="previewImg"
+                         src="{{ company_obj.com_weChat }}"
+                         style="width: 200px;height: 200px;">
+
+                    <!--<input id="avatarImg" name="avatar_img" type="file" class="img-file"/>-->
+                    <div class="container" style="position: relative;padding-left:50px; margin-top: 15px;">
+                        <span class="text"><a href="#">修改微信二维码</a></span>
+                        <div style="position: absolute;top:0;">
+                            <input id="avatarImg" name="avatarImg" type="file" class="img-file" onchange="changeUpload();" style="width: 100px;height:40px;opacity:0;" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script charset="utf-8" src="/static/plugins/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="/static/plugins/kindeditor/lang/zh_CN.js"></script>
+    <script>
+        function changeUpload(){
+            img = document.getElementById("avatarImg");
+            console.log(img);
+            $("#upload_iframe").load(function(){
+                console.log(456);
+                var text = $("#upload_iframe").contents().find("body").text();
+                console.log(text);
+                if(text){
+                    var obj = JSON.parse(text);
+
+                    $("#previewImg").empty();
+                    var imgTag = document.getElementById("previewImg");
+                    console.log(imgTag);
+                    imgTag.src = "/" + obj.data;
+                    console.log(obj.data);
+                    location.reload("/backend/baseinfo/");
+                }
+
+            });
+
+            $("#fm1").submit(); // 表单提交
+        }
+
+
+        function changeUpload2(){
+            img = document.getElementById("avatarImg2");
+            console.log(img);
+            $("#upload_iframe2").load(function(){
+                console.log(456);
+                var text = $("#upload_iframe2").contents().find("body").text();
+                console.log(text);
+                if(text){
+                    var obj = JSON.parse(text);
+
+                    $("#previewImg2").empty();
+                    var imgTag = document.getElementById("previewImg2");
+                    console.log(imgTag);
+                    imgTag.src = "/" + obj.data;
+                    console.log(obj.data);
+                    location.reload("/backend/baseinfo/");
+                }
+
+            });
+
+            $("#fm2").submit(); // 表单提交
+        }
+
+
+        function changeUpload3(){
+            img = document.getElementById("avatarImg3");
+            console.log(img);
+            $("#upload_iframe3").load(function(){
+                console.log(456);
+                var text = $("#upload_iframe3").contents().find("body").text();
+                console.log(text);
+                if(text){
+                    var obj = JSON.parse(text);
+
+                    $("#previewImg3").empty();
+                    var imgTag = document.getElementById("previewImg3");
+                    console.log(imgTag);
+                    imgTag.src = "/" + obj.data;
+                    console.log(obj.data);
+                    location.reload("/backend/baseinfo/");
+                }
+
+            });
+
+            $("#fm3").submit(); // 表单提交
+        }
+
+        KindEditor.ready(function (K) {
+            var editor = K.create('textarea[name="recruit"]', {
+                resizeType: 1,
+                uploadJson: "/backend/upload_img/",
+                extraFileUploadParams:{
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            });
+        });
+
+        function baseinfo_edit_ready(ths) {
+            $(ths).next().attr("style", "");
+            $(ths).attr("style", "display: none;");
+            $("#com_name").attr("style", "");
+            $("#com_name_p").attr("style", "display: none;");
+            $("#com_tel").attr("style", "");
+            $("#com_tel_p").attr("style", "display: none;");
+            $("#com_validity").attr("style", "");
+            $("#com_validity_p").attr("style", "display: none;");
+        }
+
+        $("#basenfo_update").click(function () {
+           $.ajax({
+               url: '/backend/baseinfo_update/',
+                type: "POST",
+                data: $('#baseinfo_update_form').serialize(), // form表单中的所有可以提交的值打包发送到后台
+                //data: {'hostname': $('#host').val(), 'ip': $('#ip').val(), 'port': $('#port').val(), 'b_id': $('#sel').val()},
+                //function有三个参数，其中的第2个或第3个就是XMLHttprequest对象
+                success: function(data){
+                    // data是服务器端返回的字符串
+                    var obj = JSON.parse(data)
+                    if(obj.status){
+                        location.reload();
+                    }else{
+                        $('#error_msg').text(obj.error);
+                    }
+                }
+           })
+        });
+    </script>
+{% endblock %}

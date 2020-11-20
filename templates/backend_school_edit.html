@@ -1,0 +1,87 @@
+{% extends "backend_layout.html" %}
+
+{% block title %}校区管理-AT后台管理{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/plugins/kindeditor/themes/default/default.css"/>
+    <style>
+        .kind-content {
+            width: 100%;
+            min-height: 450px;
+        }
+    </style>
+{% endblock %}
+
+{% block conent %}
+    <ol class="breadcrumb" style="margin-bottom: 0;">
+        <li><a href="#">校区列表</a></li>
+        <li class="active">{{ school_obj.sc_name }}</li>
+    </ol>
+    <div style="padding: 5px 8px;">
+        <form action="/backend/school/edit-{{ sid }}/" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="">校区名称： <span>{{ form.sc_name.errors.0 }}</span></label>
+                {{ form.sc_name }}
+            </div>
+            <div class="form-group">
+                <label for="">校区地址： <span>{{ form.sc_addr.errors.0 }}</span></label>
+                {{ form.sc_addr }}
+            </div>
+            <div class="form-group">
+                <label for="">校区电话： <span>{{ form.sc_tel.errors.0 }}</span></label>
+                {{ form.sc_tel }}
+            </div>
+            <div class="form-group">
+                <label for="content">校区环境： <span>{{ form.sc_environment.errors.0 }}</span></label>
+                {{ form.sc_environment }}
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="保 存">
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script charset="utf-8" src="/static/plugins/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="/static/plugins/kindeditor/lang/zh_CN.js"></script>
+    <script>
+        KindEditor.ready(function (K) {
+            var editor = K.create('textarea[name="sc_environment"]', {
+                resizeType: 1,
+                uploadJson: "/backend/upload_img/",
+                extraFileUploadParams:{
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            });
+        });
+        function changeUpload(){
+            var img_name = $("id_com_name").val();
+            console.log("11", img_name);
+            //$("#img_name").val(img_name);
+            img = document.getElementById("avatarImg");
+            console.log(img);
+            $("#upload_iframe").load(function(){
+                console.log(456);
+                var text = $("#upload_iframe").contents().find("body").text();
+                console.log(text);
+                if(text){
+                    var obj = JSON.parse(text);
+
+                    $("#previewImg").empty();
+                    var imgTag = document.getElementById("previewImg");
+                    console.log(imgTag);
+                    imgTag.src = "/" + obj.data;
+                    console.log(obj.data);
+                    //location.reload("/backend/competition/add/");
+                    $("#img_name").val("/" + obj.data);
+                }
+
+            });
+
+            $("#fm").submit(); // 表单提交
+        }
+    </script>
+{% endblock %}

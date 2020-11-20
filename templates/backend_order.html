@@ -1,0 +1,137 @@
+{% extends "backend_layout.html" %}
+
+{% block title %}体验课预约管理-AT后台管理{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/plugins/kindeditor/themes/default/default.css"/>
+    <style>
+        .kind-content {
+            width: 100%;
+            min-height: 450px;
+        }
+        .hide{
+            display: none;
+        }
+        .c1{
+            position:fixed;
+            left: 0;
+            top:0;
+            right:0;
+            bottom:0;
+            background-color:black;
+            opacity:0.6;
+            z-index:9;
+        }
+        .c2{
+            width:300px;
+            height:100px;
+            background-color:white;
+            position: fixed;
+            left: 50%;
+            top:50%;
+            margin-left:-150px;
+            margin-top:-50px;
+            z-index:10;
+        }
+    </style>
+{% endblock %}
+
+{% block conent %}
+    <ol class="breadcrumb" style="margin-bottom: 0;">
+        <li><a href="/backend/order/">体验课</a></li>
+        <li class="active">预约列表</li>
+    </ol>
+    <div style="padding: 10px 8px;">
+        <div class="clearfix"
+             style="height: 36px;line-height: 35px;padding: 0 25px;border-top: 1px solid #dddddd;background-color: #f1f0f0">
+            <i class="fa fa-table" aria-hidden="true"></i>
+            共搜索到体验课预约人数({{ data_count }}个)，未处理的人数({{ undeal_count }}个)
+{#            <a target="_blank" href="/backend/competition/add/" class="right"#}
+{#               style="display: inline-block;padding:0 10px;background-color: #428bca;color: #ffffff;">#}
+{#                <i class="fa fa-plus-circle" aria-hidden="true"></i>#}
+{#                创建新竞赛项目#}
+{#            </a>#}
+        </div>
+
+        <div class="c1 hide"></div>
+        <div class="c2 hide">
+            <div style="padding: 8px 15px;"><span>相关数据将永久删除不可恢复，确定删除？</span></div>
+            <div style="">
+                <form action="/backend/competition/delete/" method="post">
+                    {% csrf_token %}
+                    <input name="del_id" id="del_id" type="text" style="display: none;">
+                    <input style="margin: 20px 60px;" type="submit" value="确定" />
+                    <input id="del_cancel" type="button" value="取消" />
+                </form>
+            </div>
+        </div>
+
+        {% if data_count %}
+            <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>体验课预约号码</th>
+                <th>学生姓名</th>
+                <th>学生年龄</th>
+                <th>微信号</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for row in order_obj %}
+                    <tr id="{{ row.id }}">
+                        <td><a>{{ row.telephone }}</a></td>
+                        <td><a>{{ row.stu_name }}</a></td>
+                        <td><a>{{ row.stu_age }}</a></td>
+                        <td><a>{{ row.weChat }}</a></td>
+                        <td>
+{#                            <a class="del_a btn btn-danger btn-xs" >#}
+{#                                <i class="fa fa-times" aria-hidden="true"></i>#}
+{#                                删除#}
+{#                            </a>#}
+{#                            |#}
+                            {% if row.deal == 0 %}
+                                <a class="btn btn-primary btn-xs" href="/backend/order/deal-{{ row.id }}/">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    未处理
+                                </a>
+                            {% else %}
+                                <a class="btn btn-primary btn-xs" style="background-color: #6c757d;">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    已处理
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <h3>无体验课预约</h3>
+        {% endif %}
+
+        {% if data_count %}
+            <div class="clearfix">
+                <ul class="pagination right" style="margin-top: 0">
+                    {{ page_str }}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script charset="utf-8" src="/static/plugins/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="/static/plugins/kindeditor/lang/zh_CN.js"></script>
+    <script>
+        $(".del_a").click(function () {
+            var del_id = $(this).parent().parent().attr("id");
+            console.log(del_id);
+            $(".c1, .c2").removeClass("hide");
+            $("#del_id").val(del_id);
+        })
+        $("#del_cancel").click(function () {
+            $(".c1, .c2").addClass("hide");
+        })
+    </script>
+{% endblock %}

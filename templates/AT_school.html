@@ -1,0 +1,15 @@
+{% for row in school_obj %}
+    <h2>{{ row.sc_name }}校区</h2>
+    <div>
+        详细地址：{{ row.sc_addr }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        联系方式：{{ row.sc_tel }}
+    </div>
+    <br/><br/>
+    <div>
+
+        {% autoescape off %}
+        {{ row.sc_environment }}
+        {% endautoescape %}
+    </div>
+    <hr/>
+{% endfor %}

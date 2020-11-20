@@ -1,0 +1,101 @@
+{% extends "backend_layout.html" %}
+
+{% block title %}竞赛成绩-AT后台管理{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/plugins/kindeditor/themes/default/default.css"/>
+    <style>
+        .kind-content {
+            width: 100%;
+            min-height: 450px;
+        }
+    </style>
+{% endblock %}
+
+{% block conent %}
+    <ol class="breadcrumb" style="margin-bottom: 0;">
+        <li><a href="#">竞赛成绩</a></li>
+        <li class="active">{{ competitionResult_obj.cr_name }}</li>
+    </ol>
+    <div style="padding: 5px 8px;">
+        <div class="form-group">
+            <label for="">竞赛成绩照片：</label><span style="font-size: 10px;color: red;">请上传大小为762px*604px的倍数的图片文件，下图为默认图片</span>
+            <div>
+                <form id="fm" role="form" method="post" action="/backend/upload_result_img/" enctype="multipart/form-data"
+                      target="upload_iframe">
+                    {% csrf_token %}
+
+                    <iframe style="display: none;" id="upload_iframe" name="upload_iframe"></iframe>
+                    <img id="previewImg"
+                         src="{{ competitionResult_obj.cr_img }}"
+                         onerror="this.src='/static/images/ser_right.png';this.onerror=null"
+                         style="width: 190px;height: 151px;">
+                    &nbsp;&nbsp;&nbsp;
+
+                    <!--<input id="avatarImg" name="avatar_img" type="file" class="img-file"/>-->
+                    <div class="container" style="position: relative;padding-left:25px; margin-top: 15px;">
+                        <span class="text"><a>点击这里修改竞赛图片</a></span>
+                        <div style="position: absolute;top:0;">
+                            <input id="avatarImg" name="avatarImg" type="file" class="img-file" onchange="changeUpload();" style="width: 100px;height:40px;opacity:0;" />
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <form action="/backend/competitionResult/edit-{{ cid }}/" method="post">
+            {% csrf_token %}
+            <input id="img_name" name="img_name" type="text" style="display: none;" value="/static/images/competition_default.png">
+            <div class="form-group">
+                <label for="">竞赛成绩名称： <span>{{ form.cr_name.errors.0 }}</span></label>
+                {{ form.cr_name }}
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="保 存">
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script charset="utf-8" src="/static/plugins/kindeditor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="/static/plugins/kindeditor/lang/zh_CN.js"></script>
+    <script>
+        KindEditor.ready(function (K) {
+            var editor = K.create('textarea[name="com_introduction"]', {
+                resizeType: 1,
+                uploadJson: "/backend/upload_img/",
+                extraFileUploadParams:{
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            });
+        });
+        function changeUpload(){
+            var img_name = $("id_com_name").val();
+            console.log("11", img_name);
+            //$("#img_name").val(img_name);
+            img = document.getElementById("avatarImg");
+            console.log(img);
+            $("#upload_iframe").load(function(){
+                console.log(456);
+                var text = $("#upload_iframe").contents().find("body").text();
+                console.log(text);
+                if(text){
+                    var obj = JSON.parse(text);
+
+                    $("#previewImg").empty();
+                    var imgTag = document.getElementById("previewImg");
+                    console.log(imgTag);
+                    imgTag.src = "/" + obj.data;
+                    console.log(obj.data);
+                    //location.reload("/backend/competition/add/");
+                    $("#img_name").val("/" + obj.data);
+                }
+
+            });
+
+            $("#fm").submit(); // 表单提交
+        }
+    </script>
+{% endblock %}

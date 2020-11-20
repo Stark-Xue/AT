@@ -1,0 +1,314 @@
+{% extends "web_layout.html" %}
+
+{% block title %}AT机器人官网{% endblock %}
+
+{% block css %}
+    <style>
+      .carousel-inner img {
+          width: 100%;
+          height: 100%;
+      }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!-- 主要内容 开始 -->
+    <div class="swiper-container pc">
+
+        <div id="demo" class="carousel slide" data-ride="carousel">
+
+          <!-- 指示符 -->
+          <ul class="carousel-indicators">
+            {% for img in imgs %}
+              {% if forloop.counter0 == 0 %}
+                  <li data-target="#demo" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
+              {% else %}
+                  <li data-target="#demo" data-slide-to="{{ forloop.counter0 }}"></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+
+          <!-- 轮播图片 -->
+          <div class="carousel-inner">
+{#            <div class="carousel-item active">#}
+{#              <img src="https://static.runoob.com/images/mix/img_fjords_wide.jpg">#}
+{#            </div>#}
+{#            <div class="carousel-item">#}
+{#              <img src="https://static.runoob.com/images/mix/img_nature_wide.jpg">#}
+{#            </div>#}
+{#            <div class="carousel-item">#}
+{#              <img src="https://static.runoob.com/images/mix/img_mountains_wide.jpg">#}
+{#            </div>#}
+{#              <div class="carousel-item">#}
+{#              <img src="https://static.runoob.com/images/mix/img_mountains_wide.jpg">#}
+{#            </div>#}
+              {% for img in imgs %}
+                  {% if forloop.counter == 1 %}
+                      <div class="carousel-item active">
+                        <img src="/static/images/lbt/{{ img }} " style="width: 100%; height: 450px; margin: auto;">
+                      </div>
+                  {% else %}
+                      <div class="carousel-item">
+                        <img src="/static/images/lbt/{{ img }} " style="width: 100%; height: 450px; margin: auto;">
+                      </div>
+                  {% endif %}
+              {% endfor %}
+          </div>
+
+          <!-- 左右切换按钮 -->
+          <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </a>
+          <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </a>
+
+        </div>
+
+
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="swiper-container web">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <img src="http://static-source.wukongzhanggui.com/images/20190708/5d2338f7947fd.png" alt="" class="img-responsive">
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="container">
+        <div class="about">
+            <img class="about-img" src="{{ company_obj.com_img }}">
+            <div class="about-desc">
+                <h3 class="desc-title">{{ company_obj.com_name }}</h3>
+                <p class="desc-p2">
+                    {{ company_obj.com_validity }}
+                </p>
+            </div>
+        </div>
+        <div class="service">
+            <div class="service-title">比赛项目</div>
+
+            <div class="swiper-list service-content clearfix">
+                {% for row in competitions %}
+                    {% if forloop.counter0 == 2 %}
+                        <div class="item fl">
+                            <div class="item-img" style="width: 359px; height: 285px;">
+                                <img src="{{ row.com_img }}" alt="" style="width: 359px; height: 285px;">
+                            </div>
+                            <div class="item-desc">
+                                <h3 class="desc-h3">{{ row.com_name }}</h3>
+                                <p class="desc-p">{{ row.com_validity }}</p>
+                                <div class="desc-btn"><a href="/competition/{{ row.id }}/" class="btn1">查看详情</a></div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="item fl mr28">
+                            <div class="item-img" >
+                                <img src="{{ row.com_img }}" alt="" style="width: 359px; height: 285px;">
+                            </div>
+                            <div class="item-desc">
+                                <h3 class="desc-h3">{{ row.com_name }}</h3>
+                                <p class="desc-p">{{ row.com_validity }}</p>
+                                <div class="desc-btn"><a href="/competition/{{ row.id }}/" class="btn1">查看详情</a></div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+{#                <div class="item fl mr28">#}
+{#                    <div class="item-img">#}
+{#                        <img src="images/ser_center.png" alt="">#}
+{#                    </div>#}
+{#                    <div class="item-desc">#}
+{#                        <h3 class="desc-h3">VEX EDR</h3>#}
+{#                        <p class="desc-p">悟空掌柜以个人创业者能够获得踏实、阳光的收入为出发点，8大核心服务全面支持，让悟空小店创业者的时间更有价值。 </p>#}
+{#                        <div class="desc-btn"><a href="shopService.html" class="btn1">查看详情</a></div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="item fl">#}
+{#                    <div class="item-img">#}
+{#                        <img src="images/ser_right.png" alt="">#}
+{#                    </div>#}
+{#                    <div class="item-desc">#}
+{#                        <h3 class="desc-h3">ROBOMASTER</h3>#}
+{#                        <p class="desc-p">悟空掌柜的小伙伴们会持续提升供应商服务水平及标准，力争实现“因需定产、快速周转”的使命，不断为供应商赋能。 </p>#}
+{#                        <div class="desc-btn"><a href="supplierService.html" class="btn1">查看详情</a></div>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+            <div style="margin-left: 39%;margin-bottom: 30px;margin-top:-40px;border: 1px solid;width: 250px;"><a href="/competition/1/"><span style="color:red;font-size: 20px;">&nbsp;&nbsp;点击查看更多竞赛项目...</span></a></div>
+        </div>
+        <div class="ser">
+            <div class="ser-item mb40">
+                <p class="title">悟空会员</p>
+                <p class="desc">悟空掌柜坚持以严选好货树信任、认真服务立口碑为宗旨，提供6大核心服务，让悟空会员买且满意。 </p>
+            </div>
+            <div class="ser-item mb40">
+                <p class="title">小店创业者</p>
+                <p class="desc">悟空掌柜以个人创业者能够获得踏实、阳光的收入为出发点，8大核心服务全面支持，让悟空小店创业者的时间更有价值。 </p>
+            </div>
+            <div class="ser-item">
+                <p class="title">悟空供应商</p>
+                <p class="desc">悟空掌柜的小伙伴们会持续提升供应商服务水平及标准，力争实现“因需定产、快速周转”的使命，不断为供应商赋能。 </p>
+            </div>
+            <img src="images/ser_left.png" alt="">
+        </div>
+    </div>
+    <div style="width: 100%;background: #F9F8F7" class="main">
+        <div class="swiper" style="background-image: url(/static/images/swiper_bg.png)">
+            <div class="container">
+                <div class="swiper-top">
+                    <h3>完整的课程体系</h3>
+{#                    <p>悟空掌柜从技术到服务全面把控，为平台客户带来全方位升级体验，<br />解决平台客户的售前售后多重忧虑。 </p>#}
+                </div>
+
+                <!-- Swiper -->
+                <div class="swiper-list">
+                    <div class="swiper-container middle">
+                        <div class="swiper-wrapper">
+                            {% for row in courses %}
+                                <div class="swiper-slide">
+                                    <div style="height: 70px;margin-bottom: 15px;"><img src="{{ row.cour_img }}" alt=""></div>
+                                    <h5>{{ row.cour_name }}</h5>
+                                    <p>{{ row.cour_validity }}</p>
+                                </div>
+                            {% endfor %}
+
+{#                            <div class="swiper-slide">#}
+{#                                <img class="slide-img" src="images/slide2.png" alt="">#}
+{#                                <h4>市场运营中心</h4>#}
+{#                                <p>市场运营中心为小店创业者开设培训课程，帮助小店创业者掌握专业技能，提高经营能力。 </p>#}
+{#                            </div>#}
+{#                            #}
+{#                            <div class="swiper-slide">#}
+{#                                <img class="slide-img" src="images/slide3.png" alt="">#}
+{#                                <h4>内控中心</h4>#}
+{#                                <p>专业的法务团队、合规团队和财税团队，最大化保障消费者权益的同时，协助供应商提升合法经营竞争力，降低小店创业者经营风险。 </p>#}
+{#                            </div>#}
+{#                            #}
+{#                            <div class="swiper-slide"><img class="slide-img" src="images/slide4.png" alt="">#}
+{#                                <h4>组织中心</h4>#}
+{#                                <p>承担人才培训考核、行政制度建设、对外联系协调等多重职责，是企业文化建设的核心。  </p>#}
+{#                            </div>#}
+{#                            #}
+{#                            <div class="swiper-slide"><img class="slide-img" src="images/slide5.png" alt="">#}
+{#                                <h4>平台运营中心</h4>#}
+{#                                <p>平台运营中心制作专业的“种草”、亲测类视频和图文，分担供应商的工作成本，减轻小店创业者的经营压力，提高购物者的购买体验。  </p>#}
+{#                            </div>#}
+
+                        </div>
+                    </div>
+                    <div id="prev" class="prev"><img src="/static/images/icon_left.png" alt=""></div>
+                    <div id="next" class="next"><img src="/static/images/icon_right.png" alt=""></div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="main2">
+        <div class="main2-top">
+            <p class="top-title">五大部门多位一体</p>
+            <p class="top-desc">悟空掌柜从技术到服务全面把控，为平台客户带来全方位升级体验，解决平台客户的售前售后多重忧虑。 </p>
+        </div>
+        <div class="main2-swiper">
+            <!-- Swiper -->
+            <div class="swiper2-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img class="slide-img" src="images/slide1.png" alt="">
+                        <h4>互联网中心</h4>
+                        <p>互联网技术作为悟空平台的核心基础设施，为供应商、小店创业者、消费者提供多种技术支持与协同工具，便捷平台操作系统。 </p>
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="slide-img" src="images/slide2.png" alt="">
+                        <h4>市场运营中心</h4>
+                        <p>市场运营中心为小店创业者开设培训课程，帮助小店创业者掌握专业技能，提高经营能力。  </p>
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="slide-img" src="images/slide3.png" alt="">
+                        <h4>内控中心</h4>
+                        <p>专业的法务团队、合规团队和财税团队，最大化保障消费者权益的同时，协助供应商提升合法经营竞争力，降低小店创业者经营风险。  </p>
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="slide-img" src="images/slide4.png" alt="">
+                        <h4>组织中心</h4>
+                        <p>承担人才培训考核、行政制度建设、对外联系协调等多重职责，是企业文化建设的核心。  </p>
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="slide-img" src="images/slide5.png" alt="">
+                        <h4>平台运营中心</h4>
+                        <p>平台运营中心制作专业的“种草”、亲测类视频和图文，分担供应商的工作成本，减轻小店创业者的经营压力，提高购物者的购买体验。  </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/anime.min.js"></script>
+
+
+    <script src="/static/js/swiper.min.js?v=1572311855"></script>
+
+    <script>
+        var swiper = new Swiper('.middle', {
+            slidesPerView: 3,
+            spaceBetween: 48,
+            // centeredSlides: true,
+            loop: false,
+
+        });
+        $('#prev').click(function () {
+            swiper.slidePrev();
+        })
+        $('#next').click(function () {
+            swiper.slideNext();
+        })
+        var swiper2 = new Swiper('.swiper2-container', {
+            slidesPerView: 'auto',
+            spaceBetween: 20,
+            loop: false,
+        });
+    </script>
+
+    <script language="javascript">
+        var count = 1;
+        if (count > 1) {
+            var mySwiper = new Swiper('.pc', {
+                autoplay: true,//可选选项，自动滑动
+                loop: true,//无缝
+                speed: 2000,
+                pagination: {
+                    el: '.swiper-pagination'
+                },
+            })
+            var mySwiperWeb = new Swiper('.web', {
+                autoplay: true,//可选选项，自动滑动
+                loop: true,//无缝
+                speed: 2000,
+                pagination: {
+                    el: '.swiper-pagination'
+                },
+            })
+        }
+
+    </script>
+
+    <script>
+        $('.navbar-toggler').on('click', function (e) {
+            $('.masker').toggle();
+        })
+        $('.masker').on('click', function (e) {
+            $(this).css('display', 'none');
+            $('#navbarSupportedContent').toggleClass('show');
+        })
+    </script>
+{% endblock %}
