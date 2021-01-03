@@ -334,7 +334,7 @@ def upload_companyImg(request):
 @xframe_options_exempt
 def upload_img(request):
     #print(request.FILES["imgFile"], type(request.FILES))
-    img_obj = request.FILES.get('localUrl') #imgFile
+    img_obj = request.FILES.get('imgFile')
     #print(type(img_obj.name))
     import os
     path = os.path.join('', 'static/images')
