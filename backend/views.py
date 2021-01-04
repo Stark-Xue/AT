@@ -350,7 +350,7 @@ def upload_img(request):
     }
     print(img_path)
 
-    print(settings.BASE_DIR)
+    print(base.BASE_DIR)
     return HttpResponse(json.dumps(dic))
 
 
