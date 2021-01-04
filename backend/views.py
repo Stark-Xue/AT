@@ -331,7 +331,7 @@ def upload_companyImg(request):
 
 
 @check_login
-@xframe_options_exempt
+@xframe_options_sameorigin
 def upload_img(request):
     #print(request.FILES["imgFile"], type(request.FILES))
     img_obj = request.FILES.get('imgFile')
