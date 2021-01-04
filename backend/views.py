@@ -374,7 +374,7 @@ def upload_lbt(request):
     }
     print(img_path)
 
-    print(settings.BASE_DIR)
+    #print(settings.BASE_DIR)
     return HttpResponse(json.dumps(dic))
 
 
@@ -439,7 +439,7 @@ def upload_result_img(request):
     ret = {'status': True, 'data': img_path}
     print(img_path)
 
-    print(settings.BASE_DIR)
+    #print(settings.BASE_DIR)
     return HttpResponse(json.dumps(ret))
 
 
@@ -580,7 +580,7 @@ def upload_competition_img(request):
     ret = {'status': True, 'data': img_path}
     print(img_path)
 
-    print(settings.BASE_DIR)
+    # print(settings.BASE_DIR)
     return HttpResponse(json.dumps(ret))
 
 
@@ -752,7 +752,7 @@ def upload_course_img(request):
     ret = {'status': True, 'data': img_path}
     print(img_path)
 
-    print(settings.BASE_DIR)
+    #print(settings.BASE_DIR)
     return HttpResponse(json.dumps(ret))
 
 
