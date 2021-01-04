@@ -8,7 +8,7 @@ from .forms.course import CourseForm
 from .forms.user import UserForm
 from .forms.school import SchoolForm
 from .forms.competitionResult import CompetitionResultForm
-from AT import settings
+from AT.settings import base
 from utils.pagination import Page
 
 '''
