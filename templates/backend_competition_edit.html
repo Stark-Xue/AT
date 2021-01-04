@@ -75,8 +75,14 @@
                 resizeType: 1,
                 uploadJson: "/backend/upload_img/",
                 extraFileUploadParams:{
-                    csrfmiddlewaretoken: "{{ csrf_token }}",
-            },
+                    csrfmiddlewaretoken: "{{ csrf_token }}",},
+                allowFileManager: true,
+                //上传文件后执行的回调函数,获取上传图片的路径
+                afterUpload: function (url) {
+                    var obj = json.parse(url);
+                    console.log(obj.url);
+                    //alert($("#uppics").val())
+                },
             });
         });
         function changeUpload(){
